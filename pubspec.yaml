@@ -1,5 +1,5 @@
 name: ai_object_detector
-description: "A new Flutter project."
+description: "AI Object Detector App"
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
@@ -11,13 +11,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  tflite_flutter: ^0.10.4
   cupertino_icons: ^1.0.2
+  image: ^4.1.3
+  image_picker: ^1.0.5
+  tflite_flutter: ^0.10.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
 
 flutter:
   uses-material-design: true

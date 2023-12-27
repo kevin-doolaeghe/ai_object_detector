@@ -13,25 +13,29 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final imagePicker = ImagePicker();
 
-  ObjectDetection? objectDetection;
-  Uint8List? image;
+  ObjectDetection? _objectDetection;
+  Uint8List? _imageData;
 
   @override
   void initState() {
     super.initState();
-    objectDetection = ObjectDetection();
+    _objectDetection = ObjectDetection();
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const Positioned(
+        Positioned(
           top: 0,
           bottom: 0,
           left: 0,
           right: 0,
-          child: Placeholder(),
+          child: Container(
+            color: Theme.of(context).secondaryHeaderColor,
+            child:
+                (_imageData != null) ? Image.memory(_imageData!) : Container(),
+          ),
         ),
         Positioned(
           bottom: 0,
@@ -50,16 +54,19 @@ class _HomePageState extends State<HomePage> {
               children: [
                 IconButton(
                   onPressed: () async {
-                    final result = await imagePicker.pickImage(
+                    final selectedImage = await imagePicker.pickImage(
                       source: ImageSource.gallery,
                     );
-                    if (result != null) {
-                      image = objectDetection!.processImage(result.path);
+                    if (selectedImage != null) {
+                      _imageData = _objectDetection!.processImage(
+                        selectedImage.path,
+                      );
                       setState(() {});
                     }
                   },
                   icon: const Icon(
                     Icons.photo,
+                    color: Colors.white,
                     size: 64,
                   ),
                 ),

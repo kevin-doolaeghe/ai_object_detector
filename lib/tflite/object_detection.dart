@@ -83,19 +83,19 @@ class ObjectDetection {
 
     log('Processing outputs...');
     // Location
-    final locationsRaw = output.first.first as List<List<double>>;
+    final locationsRaw = output.first as List<List<num>>;
     final locations = locationsRaw.map((list) {
       return list.map((value) => (value * 300).toInt()).toList();
     }).toList();
-    log('Locations: $locations');
+    // log('Locations: $locations');
 
     // Classes
-    final classesRaw = output.elementAt(1).first as List<double>;
+    final classesRaw = output.elementAt(1).first as List<num>;
     final classes = classesRaw.map((value) => value.toInt()).toList();
     log('Classes: $classes');
 
     // Scores
-    final scores = output.elementAt(2).first as List<double>;
+    final scores = output.elementAt(2).first as List<num>;
     log('Scores: $scores');
 
     // Number of detections
@@ -104,10 +104,11 @@ class ObjectDetection {
     log('Number of detections: $numberOfDetections');
 
     log('Classifying detected objects...');
-    final List<String> classication = [];
+    final List<String> classications = [];
     for (var i = 0; i < numberOfDetections; i++) {
-      classication.add(_labels![classes[i]]);
+      classications.add(_labels![classes[i]]);
     }
+    log('Detected objects: $classications');
 
     log('Outlining objects...');
     for (var i = 0; i < numberOfDetections; i++) {
@@ -126,7 +127,7 @@ class ObjectDetection {
         // Label drawing
         img.drawString(
           imageInput,
-          '${classication[i]} ${scores[i]}',
+          '${classications[i]} ${scores[i]}',
           font: img.arial14,
           x: locations[i][1] + 1,
           y: locations[i][0] + 1,
@@ -146,12 +147,12 @@ class ObjectDetection {
     final input = [imageMatrix];
 
     // Set output tensor
-    // Locations: [1, 10, 4]
+    // Locations: [4, 1001]
     // Classes: [1, 10],
     // Scores: [1, 10],
     // Number of detections: [1]
     final output = {
-      0: [List<List<num>>.filled(10, List<num>.filled(4, 0))],
+      0: List<List<num>>.filled(4, List<num>.filled(1001, 0)),
       1: [List<num>.filled(10, 0)],
       2: [List<num>.filled(10, 0)],
       3: [0.0],
